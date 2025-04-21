@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Credit Evaluation</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 50px;
+        }
+        .form-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-group label {
+            width: 150px; /* Adjust the width as needed */
+            text-align: right;
+            margin-right: 10px;
+        }
+        .form-control {
+            width: 50%;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            const applicationId = document.getElementById('applicationId').value;
+            const creditScore = document.getElementById('creditScore').value;
+            const loanAmount = document.getElementById('loanAmount').value;
+            const evaluationDate = document.getElementById('evaluationDate').value;
+            const currentDate = new Date();
+            const sixMonthsAgo = new Date();
+            sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
+
+            if (applicationId.length !== 7 || applicationId.startsWith('0')) {
+                alert('Application ID must be 7 digits long and should not start with zero.');
+                return false;
+            }
+            if (!Number.isInteger(Number(creditScore)) || creditScore < 0 || creditScore > 800) {
+                alert('Credit Score must be between 0 and 800.');
+                return false;
+            }
+            if (!Number.isInteger(Number(loanAmount)) || loanAmount <= 0) {
+                alert('Loan Amount must be a positive number.');
+                return false;
+            }
+            if (new Date(evaluationDate) < sixMonthsAgo || new Date(evaluationDate) > currentDate) {
+                alert('Evaluation Date must be within the past 6 months.');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h1>Credit Evaluation and Risk Assessment</h1>
+    <form th:action="@{/credit-evaluation/evaluate}" th:object="${creditEvaluation}" method="post" onsubmit="return validateForm()">
+        <div class="form-group">
+            <label for="applicationId">Application ID:</label>
+            <input type="number" id="applicationId" th:field="*{applicationId}" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="creditScore">Credit Score:</label>
+            <input type="number" id="creditScore" th:field="*{creditScore}" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="loanAmount">Loan Amount:</label>
+            <input type="number" id="loanAmount" name="loanAmount" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="evaluationDate">Evaluation Date:</label>
+            <input type="date" id="evaluationDate" th:field="*{evaluationDate}" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Evaluate</button>
+    </form>
+</div>
+</body>
+</html>

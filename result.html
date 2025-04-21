@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Risk Assessment</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        h1 {
+            margin-bottom: 50px;
+        }
+        .result-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .result-label {
+            width: 150px; /* Adjust the width as needed */
+            text-align: right;
+            margin-right: 10px;
+        }
+        .result-value {
+            text-align: left;
+            width: 150px; /* Adjust the width as needed */
+        }
+        .risk-level {
+            color: red;
+            font-weight: bold;
+        }
+        .btn-back {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Risk Assessment</h1>
+    <div class="result-row">
+        <div class="result-label">Application ID:</div>
+        <div class="result-value"><span th:text="${result.applicationId}"></span></div>
+    </div>
+    <div class="result-row">
+        <div class="result-label">Credit Score:</div>
+        <div class="result-value"><span th:text="${result.creditScore}"></span></div>
+    </div>
+    <div class="result-row">
+        <div class="result-label">Risk Score:</div>
+        <div class="result-value"><span th:text="${result.riskScore}"></span></div>
+    </div>
+    <div class="result-row">
+        <div class="result-label">Evaluation Date:</div>
+        <div class="result-value"><span th:text="${result.evaluationDate}"></span></div>
+    </div>
+    <div class="result-row">
+        <div class="result-label">Risk Level:</div>
+        <div class="result-value risk-level">
+            <span th:if="${result.riskScore} >= 0 and ${result.riskScore} <= 33">Low</span>
+            <span th:if="${result.riskScore} > 33 and ${result.riskScore} <= 67">Medium</span>
+            <span th:if="${result.riskScore} > 67 and ${result.riskScore} <= 100">High</span>
+        </div>
+    </div>
+    <a href="/credit-evaluation/" class="btn btn-primary btn-back">Back to Home</a>
+</div>
+</body>
+</html>
